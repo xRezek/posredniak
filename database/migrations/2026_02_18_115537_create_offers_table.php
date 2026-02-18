@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('experience_required');
             $table->string('localization');
             $table->foreignId('place_of_work_id')->constrained('places_of_work');
-            $table->foreignId('type_of_contracts')->constrained('types_of_contract');
+            $table->foreignId('type_of_contract_id')->constrained('types_of_contract');
             $table->string('company_name', 100);
             $table->string('contact', 100);
             $table->timestamps();

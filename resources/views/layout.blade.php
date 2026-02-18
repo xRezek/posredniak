@@ -5,5 +5,8 @@
     </head>
 <body>
     <h1 class="text-9xl">Hello</h1>
+    @php
+        dd(fake()->company());
+    @endphp
 </body>
 </html>
