@@ -26,6 +26,7 @@ class Offer extends Model
         'type_of_contract_id',
         'company_name',
         'contact',
+        'created_at',
     ];
 
     protected $hidden = [
@@ -33,19 +34,19 @@ class Offer extends Model
         'deleted_at'
     ];
 
-    public function categories(): BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function placesOfWork(): BelongsTo
+    public function placeOfWork(): BelongsTo
     {
-        return $this->belongsTo(PlaceOfWork::class);
+        return $this->belongsTo(PlaceOfWork::class, 'place_of_work_id');
     }
 
-    public function typesOfWork(): BelongsTo
+    public function typeOfWork(): BelongsTo
     {
-        return $this->belongsTo(TypeOfContract::class);
+        return $this->belongsTo(TypeOfContract::class, 'type_of_contract_id');
     }
 
     public function user(): BelongsTo

@@ -1,6 +1,5 @@
 <div class="max-w-4xl mx-auto px-6 py-8">
     <form action="">
-        <!-- Główna wyszukiwarka -->
         <div class="flex items-center border-2 border-black rounded-2xl overflow-hidden mb-4">
             <div class="flex items-center px-4 py-3 gap-2 flex-1">
                 <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -22,7 +21,17 @@
                 </button>
         </div>
 
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2 space-x-2 mx-3">
+            <select name="category" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
+                <option value="">Kategoria</option>
+                <option value="it">IT</option>
+                <option value="marketing">Marketing</option>
+                <option value="sales">Sprzedaż</option>
+                <option value="finance">Finanse</option>
+                <option value="hr">HR</option>
+                <option value="other">Inne</option>
+            </select>
+
             <select name="type" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
                 <option value="">Typ zatrudnienia</option>
                 <option value="full-time">Pełny etat</option>
@@ -43,11 +52,10 @@
                 <option value="0">Nie</option> 
             </select>
 
-            <select name="level" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
-                <option value="">Poziom doświadczenia</option>
-                <option value="entry">Junior</option>
-                <option value="mid">Mid</option>
-                <option value="senior">Senior</option>
+            <select name="sort" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
+                <option value="">Sortuj</option>
+                <option value="desc">Od najnowzsej</option>
+                <option value="asc">Od najstarszej</option>
             </select>
         </div>
     </form>

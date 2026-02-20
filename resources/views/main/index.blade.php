@@ -3,7 +3,7 @@
         <div class="text-center mt-10">
             <h1 class="text-7xl font-bold mb-4" style="font-family: 'Space Grotesk'">Mamy</h1>
             <p class="text-3xl text-gray-700">pracę dla ludzi z twoim wykształceniem.</p>
-            <form action="" method="GET" class="mt-30 flex justify-center">
+            <form action="{{ route('jobList') }}" method="GET" class="mt-30 flex justify-center">
                 <div class="flex items-center border-2 border-black rounded-2xl overflow-hidden">
                     <div class="flex items-center px-4 py-3 gap-2">
                         <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
