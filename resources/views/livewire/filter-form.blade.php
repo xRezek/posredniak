@@ -17,9 +17,9 @@
                 <input type="text" name="location" placeholder="Lokalizacja"
                     class="w-full text-sm focus:outline-none placeholder-gray-400">
             </div>
-            <button type="submit" class="bg-black text-white px-6 py-3 text-sm font-semibold hover:bg-gray-800 transition-colors duration-300 border-l-2 border-black">
-                Szukaj
-            </button>
+                <button type="submit" class="bg-white text-black px-6 py-3 text-sm font-semibold hover:bg-black hover:text-white transition-colors duration-300 border-l-2 border-black">
+                    Szukaj
+                </button>
         </div>
 
         <div class="flex flex-wrap gap-2">
@@ -40,8 +40,7 @@
             <select name="level" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
                 <option value="">Wymagane doświadczenie</option>
                 <option value="1">Tak</option>
-                <option value="0">Nie</option>
-                
+                <option value="0">Nie</option> 
             </select>
 
             <select name="level" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
