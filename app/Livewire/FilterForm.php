@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Category;
+use App\Models\PlaceOfWork;
+use App\Models\TypeOfContract;
 
 class FilterForm extends Component
 {
@@ -19,6 +22,10 @@ class FilterForm extends Component
 
     public function render()
     {
-        return view('livewire.filter-form');
+        return view('livewire.filter-form',[
+            'categories' => Category::all(),
+            'typesOfWork' => TypeOfContract::all(),
+            'placesOfWork' => PlaceOfWork::all(),
+        ]);
     }
 }

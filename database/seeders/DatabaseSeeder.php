@@ -28,9 +28,10 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Służba zdrowia'],
             ['name' => 'Transport'],
             ['name' => 'Budownictwo'],
-            ['name' => 'Gastronomia']
+            ['name' => 'Gastronomia'],
+            ['name' => 'Inna']
         )
-        ->count(10)
+        ->count(11)
         ->create();
 
         PlaceOfWork::factory()->sequence(

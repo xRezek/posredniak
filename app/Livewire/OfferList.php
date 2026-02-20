@@ -14,13 +14,23 @@ class OfferList extends Component
     public $keyword;
     public $location;
 
+    
+
     public function render()
     {
+        $keyword = $this->keyword;
+        $location = $this->location;
+
         $offers = Offer::with(['user', 'category', 'placeOfWork', 'typeOfWork'])
-            ->whereLike('title', '%' . $this->keyword . '%')
-            ->whereLike('localization', '%' . $this->location . '%')
-            ->paginate(10);
-        // dd($offers);
+            ->when($keyword, function($q) use ($keyword, $location) {
+                $q->where(function($q) use ($keyword) {
+                    $q->whereLike('title', '%' . $keyword . '%', false)
+                    ->orWhereLike('description', '%' . $keyword . '%')
+                    ->orWhereHas('category', fn($q) => $q->whereLike('name', '%' . $keyword . '%'));
+                });
+            })
+            ->when($location, fn($q) => $q->whereLike('localization', '%' . $location . '%'))
+            ->paginate(4);
 
         return view('livewire.offer-list', [
             'offers' => $offers
@@ -34,10 +44,15 @@ class OfferList extends Component
     }
 
     #[On('filtersUpdated')]
-    public function applyFilters(string $keyword, string $location): void
+    public function applyFilters(string $keyword, string $location)
     {
         $this->keyword = $keyword;
         $this->location = $location;
         $this->resetPage(); // wróć do strony 1 po zmianie filtrów
+    }
+
+    public function select(int $id)
+    {
+        $this->dispatch('offerSelected', id: $id);
     }
 }

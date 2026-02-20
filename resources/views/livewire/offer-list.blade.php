@@ -1,7 +1,7 @@
 <div class="w-2/5 overflow-y-auto border-r border-gray-200 p-3 flex flex-col gap-3">
-    @foreach ($offers as $offer)
-        <div wire:click="$dispatch('offerSelected', {id: {{ $offer->id }}})"
-            class="border-2 border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-black transition-colors duration-200">
+        
+    @forelse ($offers as $offer)
+        <div wire:key="offer-{{ $offer->id }}" wire:click="select({{ $offer->id }})" class="border-2 border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-black transition-colors duration-200">
 
             <div class="flex justify-between items-start">
                 <h3 class="font-semibold text-sm">{{ $offer->title }}</h3>
@@ -25,6 +25,8 @@
                 <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->placeOfWork->name }}</span>
             </div>
         </div>
-    @endforeach
+        @empty
+
+    @endforelse
     {{ $offers->links() }}
 </div>

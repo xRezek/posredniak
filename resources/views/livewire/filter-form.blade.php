@@ -24,32 +24,29 @@
         <div class="flex flex-wrap gap-2 space-x-2 mx-3">
             <select name="category" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
                 <option value="">Kategoria</option>
-                <option value="it">IT</option>
-                <option value="marketing">Marketing</option>
-                <option value="sales">Sprzedaż</option>
-                <option value="finance">Finanse</option>
-                <option value="hr">HR</option>
-                <option value="other">Inne</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             </select>
 
             <select name="type" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
-                <option value="">Typ zatrudnienia</option>
-                <option value="full-time">Pełny etat</option>
-                <option value="part-time">Część etatu</option>
-                <option value="contract">Kontrakt</option>
+                <option value="">Rodzaj umowy</option>
+                @foreach ($typesOfWork as $type)
+                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                @endforeach
             </select>
 
             <select name="mode" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
                 <option value="">Tryb pracy</option>
-                <option value="remote">Zdalnie</option>
-                <option value="onsite">Stacjonarnie</option>
-                <option value="hybrid">Hybrydowo</option>
+                @foreach ($placesOfWork as $place)
+                    <option value="{{ $place->id }}">{{ $place->name }}</option>
+                @endforeach
             </select>
 
             <select name="level" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
-                <option value="">Wymagane doświadczenie</option>
-                <option value="1">Tak</option>
-                <option value="0">Nie</option> 
+                <option value="">Doświadczenie</option>
+                <option value="1">Wymagane</option>
+                <option value="0">Nie wymagane</option> 
             </select>
 
             <select name="sort" class="border-2 border-black rounded-xl px-3 py-2 text-sm focus:outline-none cursor-pointer hover:bg-black hover:text-white transition-colors duration-200">
