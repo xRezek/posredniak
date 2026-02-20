@@ -1,10 +1,10 @@
 <div class="w-3/5 flex flex-col overflow-hidden">
     @empty($offer)
         <div class="flex flex-col items-center justify-center h-full text-gray-400">
-            <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 002 2h2a2 2 0 002-2v-6a2 2 0 00-2-2h-1.5a2 2 0 00-1.414.586L11.414 11A2.001 2.001 0 0010.586 19z"/>
+            <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"/>
             </svg>
-            <p class="text-sm">Brak ofert zgodnymi z kryteriami wyszukiwania</p>
+            <p class="text-sm">Kliknij w ofertę aby zobaczyć szczegóły</p>
         </div>
     @else
         <div class="p-8 border-b border-gray-100">

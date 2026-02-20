@@ -33,4 +33,10 @@ Route::controller(AuthController::class)->group(function () {
     
 Route::get('/job-list', [OfferController::class, 'index'] )->name('jobList');
 
+Route::get('/profile', function () {
+    return view('main.profile');
+})
+->name('profile')
+->middleware('auth');
+
 require __DIR__.'/settings.php';
