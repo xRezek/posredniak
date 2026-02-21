@@ -54,8 +54,4 @@ class Offer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function favoredUsers(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'favorite_offers', 'offer_id', 'user_id');
-    }
 }

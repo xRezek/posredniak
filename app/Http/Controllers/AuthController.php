@@ -24,8 +24,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Niepoprawny login lub hasło.',
-        ]);
+            'email' => 'Niepoprawny e-mail lub hasło.',
+        ])->onlyInput('email');
     }
 
     public function register(RegistrationRequest $request)

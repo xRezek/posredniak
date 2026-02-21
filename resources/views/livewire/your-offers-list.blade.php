@@ -1,11 +1,11 @@
 <div
     x-data
     x-on:open-offer-modal.window="$flux.modal('offer-modal').show()"
+    x-on:toast.window="$flux.toast($event.detail.message, { variant: $event.detail.type === 'error' ? 'danger' : 'success' })"
 >
     <div class="sticky top-0 bg-white z-10 border-b border-gray-200 px-6 py-4 flex justify-between items-center max-w-2xl mx-auto">
         <h1 class="text-2xl font-bold" style="font-family: 'Space Grotesk'">Moje oferty pracy</h1>
-        <button
-            wire:click="openCreateModal"
+        <button wire:click="openCreateModal"
             class="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors duration-200">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -14,10 +14,10 @@
         </button>
     </div>
 
-    <div class="max-w-2xl mx-auto px-6 py-6 overflow-y-auto">
+    <div class="max-w-2xl mx-auto px-6 py-6">
         <div class="flex flex-col gap-4">
             @forelse ($offers as $offer)
-                <div class="border-2 border-gray-200 rounded-2xl p-4 hover:border-black transition-colors duration-200">
+                <div wire:key="offer-{{ $offer->id }}" class="border-2 border-gray-200 rounded-2xl p-4 hover:border-black transition-colors duration-200">
                     <div class="flex justify-between items-start">
                         <h3 class="font-semibold text-sm">{{ $offer->title }}</h3>
                         <span class="text-xs font-semibold border-2 border-black rounded-full px-2 py-0.5 shrink-0 ml-2">
@@ -32,24 +32,19 @@
                         {{ $offer->localization }}
                     </div>
                     <div class="flex flex-wrap gap-1.5 mt-3">
-                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->category->name }}</span>
-                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->typeOfWork->name }}</span>
-                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->placeOfWork->name }}</span>
+                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->category?->name }}</span>
+                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->typeOfWork?->name }}</span>
+                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->placeOfWork?->name }}</span>
+                        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">Doświadczenie: {{ $offer->experience_required == 1 ? 'Tak' : 'Nie' }}</span>
                     </div>
                     <div class="flex justify-between items-center mt-4">
-                        <span class="text-xs text-gray-400">Opublikowano: {{ date('d-m-Y', strtotime($offer->created_at)) }}</span>
+                        <span class="text-xs text-gray-400">Opublikowano: {{ \Carbon\Carbon::parse($offer->created_at)->locale('pl')->diffForHumans() }}</span>
                         <div class="flex gap-3">
-                            <button
-                                wire:click="openEditModal({{ $offer->id }})"
-                                class="text-sm font-medium text-black hover:underline">
-                                Edytuj
-                            </button>
-                            <button
-                                wire:click="deleteOffer({{ $offer->id }})"
+                            <button wire:click="openEditModal({{ $offer->id }})"
+                                class="text-sm font-medium text-black hover:underline">Edytuj</button>
+                            <button wire:click="deleteOffer({{ $offer->id }})"
                                 wire:confirm="Na pewno chcesz usunąć tę ofertę?"
-                                class="text-sm font-medium text-red-500 hover:underline">
-                                Usuń
-                            </button>
+                                class="text-sm font-medium text-red-500 hover:underline">Usuń</button>
                         </div>
                     </div>
                 </div>
@@ -63,11 +58,16 @@
                 </div>
             @endforelse
         </div>
+        <div class="mt-6">
+            {{ $offers->links() }}
+        </div>
     </div>
 
     <flux:modal name="offer-modal" class="max-w-2xl w-full">
         <div class="p-6">
-            <h2 class="text-xl font-bold mb-6" style="font-family: 'Space Grotesk'">Oferta pracy</h2>
+            <h2 class="text-xl font-bold mb-6" style="font-family: 'Space Grotesk'">
+                {{ $editingOfferId ? 'Edytuj ofertę' : 'Nowa oferta pracy' }}
+            </h2>
             <form wire:submit.prevent="saveOffer" class="flex flex-col gap-4">
                 <div class="flex gap-3">
                     <div class="flex flex-col gap-1 w-full">
@@ -83,7 +83,6 @@
                         @error('pay') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                     </div>
                 </div>
-
                 <div class="flex gap-3">
                     <div class="flex flex-col gap-1 w-full">
                         <label class="text-sm font-medium">Firma</label>
@@ -98,29 +97,57 @@
                         @error('localization') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                     </div>
                 </div>
-
+                <div class="flex gap-3">
+                    <div class="flex flex-col gap-1 w-full">
+                        <label class="text-sm font-medium">Kategoria</label>
+                        <select wire:model="category_id" class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none">
+                            <option value="" disabled>Wybierz</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ $category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="flex flex-col gap-1 w-full">
+                        <label class="text-sm font-medium">Rodzaj umowy</label>
+                        <select wire:model="type_of_contract_id" class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none">
+                            <option value="">Wybierz</option>
+                            @foreach($typesOfWork as $type)
+                                <option value="{{ $type->id }}" {{ $type_of_contract_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('type_of_contract_id') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="flex flex-col gap-1 w-full">
+                        <label class="text-sm font-medium">Tryb pracy</label>
+                        <select wire:model="place_of_work_id" class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none">
+                            <option value="">Wybierz</option>
+                            @foreach($placesOfWork as $place)
+                                <option value="{{ $place->id }}" {{ $place_of_work_id == $place->id ? 'selected' : '' }}>{{ $place->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('place_of_work_id') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                    </div>
+                </div>
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium">Kontakt</label>
                     <input type="text" wire:model="contact" placeholder="email lub telefon"
                         class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black">
                     @error('contact') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                 </div>
-
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium">Opis stanowiska</label>
                     <textarea wire:model="description" rows="4" placeholder="Opisz stanowisko, wymagania, benefity..."
                         class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                 </div>
-
                 <div class="flex items-center gap-3">
                     <input type="checkbox" wire:model="experience_required" id="experience_required" class="w-4 h-4 accent-black">
                     <label for="experience_required" class="text-sm font-medium">Wymagane doświadczenie</label>
                 </div>
-
                 <div class="flex gap-3 mt-2">
                     <button type="submit"
                         class="flex-1 bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-300">
-                        Zapisz ofertę
+                        {{ $editingOfferId ? 'Zaktualizuj' : 'Zapisz ofertę' }}
                     </button>
                     <flux:modal.close>
                         <button type="button"

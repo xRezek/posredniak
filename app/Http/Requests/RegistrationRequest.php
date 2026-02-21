@@ -29,4 +29,23 @@ class RegistrationRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Imię jest wymagane.',
+            'name.string' => 'Imię musi być tekstem.',
+            'name.max' => 'Imię nie może być dłuższe niż 255 znaków.',
+            'email.required' => 'E-mail jest wymagany.',
+            'email.string' => 'E-mail musi być tekstem.',
+            'email.email' => 'E-mail musi być poprawnym adresem e-mail.',
+            'email.max' => 'E-mail nie może być dłuższy niż 255 znaków.',
+            'email.unique' => 'E-mail jest już zajęty.',
+            'password.required' => 'Hasło jest wymagane.',
+            'password.string' => 'Hasło musi być tekstem.',
+            'password.min' => 'Hasło musi mieć co najmniej 8 znaków.',
+            'password.confirmed' => 'Hasła muszą się zgadzać.',
+            'terms.accepted' => 'Musisz zaakceptować regulamin.'
+        ];
+    }
+
 }

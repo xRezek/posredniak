@@ -6,17 +6,31 @@ use Livewire\Component;
 use App\Models\Offer;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 
 class OfferList extends Component
 {
     use WithPagination;
 
+    #[Validate('string|max:255')]
     public $keyword = '';
+
+    #[Validate('string|max:255')]
     public $location = '';
+
+    #[Validate('integer|exists:categories,id')]
     public $category = '';
+
+    #[Validate('integer|exists:type_of_contracts,id')]
     public $type_of_contract = '';
+
+    #[Validate('integer|exists:place_of_works,id')]
     public $place_of_work = '';
+
+    #[Validate('boolean')]
     public $experience_required = '';
+
+    #[Validate('in:asc,desc')]
     public $sort = 'desc';
 
     public function render()
@@ -44,8 +58,6 @@ class OfferList extends Component
             ->when($experience_required !== '', fn($q) => $q->where('experience_required', $experience_required))
             ->orderBy('created_at', $sort)
             ->paginate(4);
-
-            // dd($offers->toArray(),$keyword, $location, $category, $type_of_contract, $place_of_work, $experience_required, $sort);
 
         return view('livewire.offer-list', compact('offers'));
     }

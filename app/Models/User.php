@@ -69,8 +69,4 @@ class User extends Authenticatable
         return $this->hasMany(Offer::class);
     }
 
-    public function favoriteOffers(): BelongsToMany
-    {
-        return $this->belongsToMany(Offer::class, 'favorite_offers', 'user_id', 'offer_id');
-    }
 }

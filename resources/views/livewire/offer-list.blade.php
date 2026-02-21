@@ -23,6 +23,7 @@
                 <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->category->name }}</span>
                 <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->typeOfWork->name }}</span>
                 <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $offer->placeOfWork->name }}</span>
+                <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">Wymagane doświadczenie:{{ $offer->experience_required == 1 ? ' Tak' : ' Nie' }}</span>
             </div>
         </div>
         @empty

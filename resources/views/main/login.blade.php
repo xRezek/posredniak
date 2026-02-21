@@ -4,6 +4,20 @@
             <h1 class="text-3xl font-bold mb-2" style="font-family: 'Space Grotesk'">Zaloguj się</h1>
             <p class="text-gray-500 mb-8 text-sm">Nie masz konta? <a href="{{ route('register') }}" class="text-black font-semibold underline">Zarejestruj się</a></p>
 
+            @if ($errors->any())
+                <div class="border-2 border-red-500 rounded-xl px-4 py-3 mb-4">
+                    @foreach ($errors->all() as $error)
+                        <p class="text-sm text-red-500">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            @session('error')
+                <div class="border-2 border-red-500 rounded-xl px-4 py-3 mb-4">
+                    <p class="text-sm text-red-500">{{ session('error') }}</p>
+                </div>
+            @endsession
+
             <form method="POST" action="{{ route('login.post') }}" class="flex flex-col gap-4">
                 @csrf
 
@@ -14,10 +28,12 @@
                         id="email"
                         name="email"
                         placeholder="jan@kowalski.pl"
-                        class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                        value="{{ old('email') }}"
+                        class="border-2 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                         required
                     >
                 </div>
+
                 <div class="flex flex-col gap-1">
                     <div class="flex justify-between items-center">
                         <label for="password" class="text-sm font-medium">Hasło</label>
@@ -28,18 +44,15 @@
                         id="password"
                         name="password"
                         placeholder="••••••••"
-                        class="border-2 border-black rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                        class="border-2 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                         required
                     >
                 </div>
-                <button type="submit" class="mt-2 bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-300">Zaloguj się</button>
+
+                <button type="submit" class="mt-2 bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-300">
+                    Zaloguj się
+                </button>
             </form>
         </div>
     </div>
-
-    @session('error')
-        <div class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
-            {{ session('error') }}
-        </div>
-    @endsession
 </x-layout>
