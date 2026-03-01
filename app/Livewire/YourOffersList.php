@@ -123,11 +123,17 @@ class YourOffersList extends Component
             'user_id' => Auth::id(),
         ];
 
-        if ($this->editingOfferId) {
-            Offer::findOrFail($this->editingOfferId)->update($data);
+        $offer = Offer::findOrFail($this->editingOfferId);
+
+        if ($offer->user_id !== Auth::id()) {
+            $this->dispatch('toast', message: 'Nie masz uprawnień.', type: 'error');
+            return;
+        }elseif ($this->editingOfferId) {
+            $offer->update($data);
         } else {
             Offer::create($data);
         }
+
 
         $this->resetForm();
         $this->dispatch('toast', message: 'Oferta została zapisana.', type: 'success');
