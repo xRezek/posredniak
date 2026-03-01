@@ -105,40 +105,41 @@ class YourOffersList extends Component
         $this->dispatch('open-offer-modal');
     }
 
-    public function saveOffer()
-    {
-        $this->validate();
+public function saveOffer()
+{
+    $this->validate();
 
-        $data = [
-            'title' => $this->title,
-            'pay' => $this->pay,
-            'company_name' => $this->company_name,
-            'localization' => $this->localization,
-            'contact' => $this->contact,
-            'description' => $this->description,
-            'experience_required' => $this->experience_required,
-            'category_id' => $this->category_id,
-            'type_of_contract_id' => $this->type_of_contract_id,
-            'place_of_work_id' => $this->place_of_work_id,
-            'user_id' => Auth::id(),
-        ];
+    $data = [
+        'title' => $this->title,
+        'pay' => $this->pay,
+        'company_name' => $this->company_name,
+        'localization' => $this->localization,
+        'contact' => $this->contact,
+        'description' => $this->description,
+        'experience_required' => $this->experience_required,
+        'category_id' => $this->category_id,
+        'type_of_contract_id' => $this->type_of_contract_id,
+        'place_of_work_id' => $this->place_of_work_id,
+        'user_id' => Auth::id(),
+    ];
 
+    if ($this->editingOfferId) {
         $offer = Offer::findOrFail($this->editingOfferId);
 
         if ($offer->user_id !== Auth::id()) {
             $this->dispatch('toast', message: 'Nie masz uprawnień.', type: 'error');
             return;
-        }elseif ($this->editingOfferId) {
-            $offer->update($data);
-        } else {
-            Offer::create($data);
         }
 
-
-        $this->resetForm();
-        $this->dispatch('toast', message: 'Oferta została zapisana.', type: 'success');
-        $this->js("\$flux.modal('offer-modal').close()");
+        $offer->update($data);
+    } else {
+        Offer::create($data);
     }
+
+    $this->resetForm();
+    $this->dispatch('toast', message: 'Oferta została zapisana.', type: 'success');
+    $this->js("\$flux.modal('offer-modal').close()");
+}
 
     public function deleteOffer(int $offerId)
     {
